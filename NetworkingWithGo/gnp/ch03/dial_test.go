@@ -15,7 +15,10 @@ func TestDial(t *testing.T) {
 
 	done := make(chan struct{})
 	go func() {
-		defer func() { done <- struct{}{} }()
+		defer func() {
+			done <- struct{}{}
+
+		}()
 
 		for {
 			conn, err := listener.Accept()
@@ -46,6 +49,7 @@ func TestDial(t *testing.T) {
 		}
 	}()
 
+	t.Logf("Listenner Address: %s", listener.Addr().String())
 	conn, err := net.Dial("tcp", listener.Addr().String())
 	if err != nil {
 		t.Fatal(err)
